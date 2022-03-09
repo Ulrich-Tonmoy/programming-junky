@@ -139,8 +139,7 @@ def main():
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
-                #     run = False
-                return
+                run = False
 
         for planet in planets:
             planet.update_position(planets)
