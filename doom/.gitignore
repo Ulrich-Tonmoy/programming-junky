@@ -1,0 +1,30 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Distribution / packaging
+dist/
+build/
+eggs/
+*.egg-info/
+
+# Virtual environments
+venv/
+env/
+ENV/
+
+# IDEs and editors
+.vscode/
+.idea/
+*.pyc
+
+# Miscellaneous
+.DS_Store
+Thumbs.db
+*.bak
+*.swp
+*.swo
+*.log
+*.out
+*.lock
