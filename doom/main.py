@@ -29,9 +29,10 @@ class DoomEngine:
         pg.display.set_caption(f'{self.clock.get_fps()}')
 
     def draw(self):
+        pg.display.flip()
         self.screen.fill('black')
         self.map_renderer.draw()
-        pg.display.flip()
+        # pg.display.flip()
 
     def check_events(self):
         for e in pg.event.get():

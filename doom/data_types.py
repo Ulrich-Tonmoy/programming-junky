@@ -16,6 +16,7 @@ class Seg:
         'direction',
         'offset',
     ]
+    __slots__ += ['start_vertex', 'end_vertex', 'linedef']
 
 
 class SubSector:

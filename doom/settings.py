@@ -1,6 +1,14 @@
 import math
 
 DOOM_RES = DOOM_W, DOOM_H = 320, 200
-SCALE = 3.0
+SCALE = 4.0
 WIN_RES = WIDTH, HEIGHT = int(DOOM_W * SCALE), int(DOOM_H * SCALE)
 H_WIDTH, H_HEIGHT = WIDTH // 2, HEIGHT // 2
+
+FOV = 90.0
+H_FOV = FOV / 2
+
+PLAYER_SPEED = 0.3
+PLAYER_ROT_SPEED = 0.12
+
+SCREEN_DIST = H_WIDTH / math.tan(math.radians(H_FOV))

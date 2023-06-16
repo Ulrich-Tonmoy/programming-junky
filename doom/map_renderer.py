@@ -14,24 +14,59 @@ class MapRenderer:
             v.x), self.remap_y(v.y)) for v in self.vertexes]
 
     def draw(self):
-        self.draw_linedefs()
+        pass
+        # self.draw_linedefs()
         # self.draw_vertexes()
-        self.draw_player_pos()
-        self.draw_node(node_id=self.engine.bsp.root_node_id)
+        # self.draw_player_pos()
+        # self.draw_node(node_id=self.engine.bsp.root_node_id)
+
+    def draw_vlines(self, x1, x2, sub_sector_id):
+        color = self.get_color(sub_sector_id)
+        pg.draw.line(self.engine.screen, color, (x1, 0), (x1, HEIGHT), 3)
+        pg.draw.line(self.engine.screen, color, (x2, 0), (x2, HEIGHT), 3)
+
+    def draw_seg(self, seg, sub_sector_id):
+        v1 = self.vertexes[seg.start_vertex_id]
+        v2 = self.vertexes[seg.end_vertex_id]
+        # pg.draw.line(self.engine.screen, self.get_color(sub_sector_id), v1, v2, 4)
+        pg.draw.line(self.engine.screen, 'green', v1, v2, 4)
+        # pg.display.flip()
+        # pg.time.wait(10)
+
+    def draw_linedefs(self):
+        for line in self.linedefs:
+            p1 = self.vertexes[line.start_vertex_id]
+            p2 = self.vertexes[line.end_vertex_id]
+            pg.draw.line(self.engine.screen, 'red', p1, p2, 2)
+
+    def draw_player_pos(self):
+        pos = self.engine.player.pos
+        x = self.remap_x(pos.x)
+        y = self.remap_y(pos.y)
+        self.draw_fov(px=x, py=y)
+        pg.draw.circle(self.engine.screen, 'orange', (x, y), 10)
+
+    def draw_fov(self, px, py):
+        x, y = self.engine.player.pos
+        angle = -self.engine.player.angle + 90
+        sin_a1 = math.sin(math.radians(angle - H_FOV))
+        cos_a1 = math.cos(math.radians(angle - H_FOV))
+        sin_a2 = math.sin(math.radians(angle + H_FOV))
+        cos_a2 = math.cos(math.radians(angle + H_FOV))
+        len_ray = HEIGHT
+
+        x1, y1 = self.remap_x(
+            x + len_ray * sin_a1), self.remap_y(y + len_ray * cos_a1)
+        x2, y2 = self.remap_x(
+            x + len_ray * sin_a2), self.remap_y(y + len_ray * cos_a2)
+        pg.draw.line(self.engine.screen, 'yellow', (px, py), (x1, y1), 4)
+        pg.draw.line(self.engine.screen, 'yellow', (px, py), (x2, y2), 4)
 
     def get_color(self, seed):
         random.seed(seed)
         rnd = random.randrange
         rng = 100, 256
         return rnd(*rng), rnd(*rng), rnd(*rng)
-
-    def draw_seg(self, seg, sub_sector_id):
-        v1 = self.vertexes[seg.start_vertex_id]
-        v2 = self.vertexes[seg.end_vertex_id]
-        pg.draw.line(self.engine.screen, self.get_color(
-            sub_sector_id), v1, v2, 4)
-        pg.display.flip()
-        pg.time.wait(10)
 
     def draw_bbox(self, bbox, color):
         x, y = self.remap_x(bbox.left), self.remap_y(bbox.top)
@@ -49,18 +84,6 @@ class MapRenderer:
         x2 = self.remap_x(node.x_partition + node.dx_partition)
         y2 = self.remap_y(node.y_partition + node.dy_partition)
         pg.draw.line(self.engine.screen, 'blue', (x1, y1), (x2, y2), 4)
-
-    def draw_player_pos(self):
-        pos = self.engine.player.pos
-        x = self.remap_x(pos.x)
-        y = self.remap_y(pos.y)
-        pg.draw.circle(self.engine.screen, 'orange', (x, y), 8)
-
-    def draw_linedefs(self):
-        for line in self.linedefs:
-            p1 = self.vertexes[line.start_vertex_id]
-            p2 = self.vertexes[line.end_vertex_id]
-            pg.draw.line(self.engine.screen, (70, 70, 70), p1, p2, 3)
 
     def remap_x(self, n, out_min=30, out_max=WIDTH-30):
         return (max(self.x_min, min(n, self.x_max)) - self.x_min) * (out_max - out_min) / (self.x_max - self.x_min) + out_min
