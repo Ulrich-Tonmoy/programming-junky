@@ -9,15 +9,42 @@ class WADReader:
         self.header = self.read_header()
         self.directory = self.read_directory()
 
+    def read_sector(self, offset):
+        read_2_bytes = self.read_2_bytes
+        read_string = self.read_string
+
+        sector = Sector()
+        sector.floor_height = read_2_bytes(offset, byte_format='h')
+        sector.ceil_height = read_2_bytes(offset + 2, byte_format='h')
+        sector.floor_texture = read_string(offset + 4, num_bytes=8)
+        sector.ceil_texture = read_string(offset + 12, num_bytes=8)
+        sector.light_level = read_2_bytes(offset + 20, byte_format='H')
+        sector.type = read_2_bytes(offset + 22, byte_format='H')
+        sector.tag = read_2_bytes(offset + 24, byte_format='H')
+        return sector
+
+    def read_sidedef(self, offset):
+        read_2_bytes = self.read_2_bytes
+        read_string = self.read_string
+
+        sidedef = Sidedef()
+        sidedef.x_offset = read_2_bytes(offset, byte_format='h')
+        sidedef.y_offset = read_2_bytes(offset + 2, byte_format='h')
+        sidedef.upper_texture = read_string(offset + 4, num_bytes=8)
+        sidedef.lower_texture = read_string(offset + 12, num_bytes=8)
+        sidedef.middle_texture = read_string(offset + 20, num_bytes=8)
+        sidedef.sector_id = read_2_bytes(offset + 28, byte_format='H')
+        return sidedef
+
     def read_thing(self, offset):
         read_2_bytes = self.read_2_bytes
 
         thing = Thing()
         x = read_2_bytes(offset, byte_format='h')
         y = read_2_bytes(offset + 2, byte_format='h')
-        thing.angle = read_2_bytes(offset + 4, byte_format='h')
-        thing.type = read_2_bytes(offset + 6, byte_format='h')
-        thing.flags = read_2_bytes(offset + 8, byte_format='h')
+        thing.angle = read_2_bytes(offset + 4, byte_format='H')
+        thing.type = read_2_bytes(offset + 6, byte_format='H')
+        thing.flags = read_2_bytes(offset + 8, byte_format='H')
         thing.pos = vec2(x, y)
         return thing
 
@@ -43,6 +70,7 @@ class WADReader:
 
     def read_node(self, offset):
         read_2_bytes = self.read_2_bytes
+
         node = Node()
         node.x_partition = read_2_bytes(offset, byte_format='h')
         node.y_partition = read_2_bytes(offset + 2, byte_format='h')
@@ -65,7 +93,8 @@ class WADReader:
 
     def read_linedef(self, offset):
         read_2_bytes = self.read_2_bytes
-        linedef = LineDef()
+
+        linedef = Linedef()
         linedef.start_vertex_id = read_2_bytes(offset, byte_format='H')
         linedef.end_vertex_id = read_2_bytes(offset + 2, byte_format='H')
         linedef.flags = read_2_bytes(offset + 4, byte_format='H')
@@ -99,7 +128,7 @@ class WADReader:
             'init_offset': self.read_4_bytes(offset=8)
         }
 
-    def read_1_bytes(self, offset, byte_format='B'):
+    def read_1_byte(self, offset, byte_format='B'):
         return self.read_bytes(offset=offset, num_bytes=1, byte_format=byte_format)[0]
 
     def read_2_bytes(self, offset, byte_format):
@@ -109,7 +138,10 @@ class WADReader:
         return self.read_bytes(offset=offset, num_bytes=4, byte_format=byte_format)[0]
 
     def read_string(self, offset, num_bytes):
-        return ''.join(b.decode('ascii') for b in self.read_bytes(offset, num_bytes, byte_format='c'*num_bytes) if ord(b) != 0).upper()
+        return ''.join(b.decode('ascii') for b in
+                       self.read_bytes(offset, num_bytes,
+                                       byte_format='c' * num_bytes)
+                       if ord(b) != 0).upper()
 
     def read_bytes(self, offset, num_bytes, byte_format):
         self.wad_file.seek(offset)

@@ -10,15 +10,13 @@ class MapRenderer:
         self.vertexes = self.wad_data.vertexes
         self.linedefs = self.wad_data.linedefs
         self.x_min, self.x_max, self.y_min, self.y_max = self.get_map_bounds()
-        self.vertexes = [pg.math.Vector2(self.remap_x(
-            v.x), self.remap_y(v.y)) for v in self.vertexes]
+        self.vertexes = [pg.math.Vector2(self.remap_x(v.x), self.remap_y(v.y))
+                         for v in self.vertexes]
 
     def draw(self):
         pass
-        # self.draw_linedefs()
-        # self.draw_vertexes()
-        # self.draw_player_pos()
-        # self.draw_node(node_id=self.engine.bsp.root_node_id)
+        self.draw_linedefs()
+        self.draw_player_pos()
 
     def draw_vlines(self, x1, x2, sub_sector_id):
         color = self.get_color(sub_sector_id)
@@ -30,8 +28,6 @@ class MapRenderer:
         v2 = self.vertexes[seg.end_vertex_id]
         # pg.draw.line(self.engine.screen, self.get_color(sub_sector_id), v1, v2, 4)
         pg.draw.line(self.engine.screen, 'green', v1, v2, 4)
-        # pg.display.flip()
-        # pg.time.wait(10)
 
     def draw_linedefs(self):
         for line in self.linedefs:
@@ -86,10 +82,12 @@ class MapRenderer:
         pg.draw.line(self.engine.screen, 'blue', (x1, y1), (x2, y2), 4)
 
     def remap_x(self, n, out_min=30, out_max=WIDTH-30):
-        return (max(self.x_min, min(n, self.x_max)) - self.x_min) * (out_max - out_min) / (self.x_max - self.x_min) + out_min
+        return (max(self.x_min, min(n, self.x_max)) - self.x_min) * (
+            out_max - out_min) / (self.x_max - self.x_min) + out_min
 
     def remap_y(self, n, out_min=30, out_max=HEIGHT-30):
-        return HEIGHT - (max(self.y_min, min(n, self.y_max)) - self.y_min) * (out_max - out_min) / (self.y_max - self.y_min) - out_min
+        return HEIGHT - (max(self.y_min, min(n, self.y_max)) - self.y_min) * (
+            out_max - out_min) / (self.y_max - self.y_min) - out_min
 
     def get_map_bounds(self):
         x_sorted = sorted(self.vertexes, key=lambda v: v.x)

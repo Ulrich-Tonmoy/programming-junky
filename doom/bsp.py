@@ -12,16 +12,35 @@ class BSP:
         self.sub_sectors = engine.wad_data.sub_sectors
         self.segs = engine.wad_data.segments
         self.root_node_id = len(self.nodes) - 1
+        self.is_traverse_bsp = True
 
     def update(self):
+        self.is_traverse_bsp = True
         self.render_bsp_node(node_id=self.root_node_id)
+
+    def get_sub_sector_height(self):
+        sub_sector_id = self.root_node_id
+
+        while not sub_sector_id >= self.SUB_SECTOR_IDENTIFIER:
+            node = self.nodes[sub_sector_id]
+
+            is_on_back = self.is_on_back_side(node)
+            if is_on_back:
+                sub_sector_id = self.nodes[sub_sector_id].back_child_id
+            else:
+                sub_sector_id = self.nodes[sub_sector_id].front_child_id
+
+        sub_sector = self.sub_sectors[sub_sector_id -
+                                      self.SUB_SECTOR_IDENTIFIER]
+        seg = self.segs[sub_sector.first_seg_id]
+        return seg.front_sector.floor_height
 
     @staticmethod
     def angle_to_x(angle):
         if angle > 0:
             x = SCREEN_DIST - math.tan(math.radians(angle)) * H_WIDTH
         else:
-            x = - math.tan(math.radians(angle)) * H_WIDTH + SCREEN_DIST
+            x = -math.tan(math.radians(angle)) * H_WIDTH + SCREEN_DIST
         return int(x)
 
     def add_segment_to_fov(self, vertex1, vertex2):
@@ -29,7 +48,7 @@ class BSP:
         angle2 = self.point_to_angle(vertex2)
 
         span = self.norm(angle1 - angle2)
-        if span >= 180:
+        if span >= 180.0:
             return False
 
         rw_angle1 = angle1
@@ -42,11 +61,12 @@ class BSP:
             if span1 >= span + FOV:
                 return False
             angle1 = H_FOV
+
         span2 = self.norm(H_FOV - angle2)
         if span2 > FOV:
             if span2 >= span + FOV:
                 return False
-            angle2 = H_FOV
+            angle2 = -H_FOV
 
         x1 = self.angle_to_x(angle1)
         x2 = self.angle_to_x(angle2)
@@ -58,14 +78,11 @@ class BSP:
         for i in range(sub_sector.seg_count):
             seg = self.segs[sub_sector.first_seg_id + i]
             if result := self.add_segment_to_fov(seg.start_vertex, seg.end_vertex):
-                # self.engine.map_renderer.draw_seg(seg, sub_sector_id)
-                self.engine.map_renderer.draw_vlines(
-                    result[0], result[1], sub_sector_id)
+                self.engine.seg_handler.classify_segment(seg, *result)
 
     @staticmethod
     def norm(angle):
-        angle %= 360
-        return angle + 360 if angle < 0 else angle
+        return angle % 360
 
     def check_bbox(self, bbox):
         a, b = vec2(bbox.left, bbox.bottom), vec2(bbox.left, bbox.top)
@@ -74,7 +91,7 @@ class BSP:
         px, py = self.player.pos
         if px < bbox.left:
             if py > bbox.top:
-                bbox_sides = (b, a), (c, d)
+                bbox_sides = (b, a), (c, b)
             elif py < bbox.bottom:
                 bbox_sides = (b, a), (a, d)
             else:
@@ -98,7 +115,7 @@ class BSP:
             angle1 = self.point_to_angle(v1)
             angle2 = self.point_to_angle(v2)
 
-            span = self.norm(angle1-angle2)
+            span = self.norm(angle1 - angle2)
 
             angle1 -= self.player.angle
             span1 = self.norm(angle1 + H_FOV)
@@ -113,21 +130,24 @@ class BSP:
         return math.degrees(math.atan2(delta.y, delta.x))
 
     def render_bsp_node(self, node_id):
-        if node_id >= self.SUB_SECTOR_IDENTIFIER:
-            sub_sector_id = node_id - self.SUB_SECTOR_IDENTIFIER
-            self.render_sub_sector(sub_sector_id)
-            return None
+        if self.is_traverse_bsp:
 
-        node = self.nodes[node_id]
-        is_on_back = self.is_on_back_side(node)
-        if is_on_back:
-            self.render_bsp_node(node.back_child_id)
-            if self.check_bbox(node.bbox['front']):
-                self.render_bsp_node(node.front_child_id)
-        else:
-            self.render_bsp_node(node.front_child_id)
-            if self.check_bbox(node.bbox['back']):
+            if node_id >= self.SUB_SECTOR_IDENTIFIER:
+                sub_sector_id = node_id - self.SUB_SECTOR_IDENTIFIER
+                self.render_sub_sector(sub_sector_id)
+                return None
+
+            node = self.nodes[node_id]
+
+            is_on_back = self.is_on_back_side(node)
+            if is_on_back:
                 self.render_bsp_node(node.back_child_id)
+                if self.check_bbox(node.bbox['front']):
+                    self.render_bsp_node(node.front_child_id)
+            else:
+                self.render_bsp_node(node.front_child_id)
+                if self.check_bbox(node.bbox['back']):
+                    self.render_bsp_node(node.back_child_id)
 
     def is_on_back_side(self, node):
         dx = self.player.pos.x - node.x_partition
