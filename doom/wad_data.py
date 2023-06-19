@@ -1,4 +1,5 @@
 from wad_reader import WADReader
+from asset_data import AssetData
 
 
 class WADData:
@@ -56,6 +57,7 @@ class WADData:
         )
 
         self.update_data()
+        self.asset_data = AssetData(self)
         self.reader.close()
 
     def update_data(self):
@@ -70,7 +72,6 @@ class WADData:
     def update_linedefs(self):
         for linedef in self.linedefs:
             linedef.front_sidedef = self.sidedefs[linedef.front_sidedef_id]
-            #
             if linedef.back_sidedef_id == 0xFFFF:
                 linedef.back_sidedef = None
             else:
@@ -96,6 +97,12 @@ class WADData:
             seg.angle = (seg.angle << 16) * 8.38190317e-8
             seg.angle = seg.angle + 360 if seg.angle < 0 else seg.angle
 
+            if seg.front_sector and seg.back_sector:
+                if front_sidedef.upper_texture == '-':
+                    seg.linedef.front_sidedef.upper_texture = back_sidedef.upper_texture
+                if front_sidedef.lower_texture == '-':
+                    seg.linedef.front_sidedef.lower_texture = back_sidedef.lower_texture
+
     @staticmethod
     def print_attrs(obj):
         print()
@@ -115,3 +122,4 @@ class WADData:
         for index, lump_info in enumerate(self.reader.directory):
             if lump_name in lump_info.values():
                 return index
+        return False

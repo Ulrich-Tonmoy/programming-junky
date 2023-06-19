@@ -13,6 +13,7 @@ class DoomEngine:
     def __init__(self, wad_path='wad/DOOM1.WAD'):
         self.wad_path = wad_path
         self.screen = pg.display.set_mode(WIN_RES, pg.SCALED)
+        self.framebuffer = pg.surfarray.array3d(self.screen)
         self.clock = pg.time.Clock()
         self.running = True
         self.dt = 1 / 60
@@ -34,10 +35,9 @@ class DoomEngine:
         pg.display.set_caption(f'{self.clock.get_fps() :.1f}')
 
     def draw(self):
+        pg.surfarray.blit_array(self.screen, self.framebuffer)
+        self.view_renderer.draw_sprite()
         pg.display.flip()
-        # self.screen.fill('black')
-        # self.map_renderer.draw()
-        # pg.display.flip()
 
     def check_events(self):
         for e in pg.event.get():
@@ -47,14 +47,10 @@ class DoomEngine:
                 sys.exit()
 
     def run(self):
-        fps = 0
-        n = 15000
-        for i in range(n):
+        while self.running:
             self.check_events()
             self.update()
             self.draw()
-            fps += self.clock.get_fps()
-        print(fps / n)
 
 
 if __name__ == '__main__':

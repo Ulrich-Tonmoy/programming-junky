@@ -1,4 +1,55 @@
+class TextureMap:
+    __slots__ = [
+        'name',
+        'flags',
+        'width',
+        'height',
+        'column_dir',
+        'patch_count',
+        'patch_maps',
+    ]
+
+
+class PatchMap:
+    __slots__ = [
+        'x_offset',
+        'y_offset',
+        'p_name_index',
+        'step_dir',
+        'color_map',
+    ]
+
+
+class TextureHeader:
+    __slots__ = [
+        'texture_count',
+        'texture_offset',
+        'texture_data_offset',
+    ]
+
+
+class PatchColumn:
+    __slots__ = [
+        'top_delta',
+        'length',
+        'padding_pre',
+        'data',
+        'padding_post'
+    ]
+
+
+class PatchHeader:
+    __slots__ = [
+        'width',
+        'height',
+        'left_offset',
+        'top_offset',
+        'column_offset'
+    ]
+
+
 class Thing:
+    # 10 bytes
     __slots__ = [
         'pos',
         'angle',
