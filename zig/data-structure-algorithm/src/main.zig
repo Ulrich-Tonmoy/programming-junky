@@ -106,4 +106,144 @@ pub fn main() !void {
             std.log.info("End of tree!", .{});
         }
     }
+
+    {
+        std.log.info("Heap Allocator", .{});
+        var alloc = std.heap.page_allocator;
+        var intPtr = try alloc.create(i32);
+        intPtr.* = 42;
+        std.log.info("Heap allocated int is: {}", .{intPtr.*});
+
+        std.log.info("Array List Allocator", .{});
+        var list = std.ArrayList(i32).init(alloc);
+        defer list.deinit();
+
+        try list.append(4);
+        try list.append(8);
+        try list.append(12);
+        try list.append(99);
+
+        // remove first element and move the last to first position
+        // _ = list.swapRemove(1);
+        // remove first element
+        _ = list.orderedRemove(0);
+        // remove last element
+        // _ = list.pop();
+
+        for (list.items) |value| {
+            std.log.info("value: {}", .{value});
+        }
+    }
+
+    {
+        std.log.info("No Constructor Destructor ->", .{});
+
+        const Struct = struct {
+            a: i32 = 0,
+            info: []const u8 = "default",
+
+            const Self = @This();
+
+            const Error = error{
+                NotEven,
+            };
+
+            fn init(self: *Self, num: i32) !void {
+                if (@mod(num, 2) == 1)
+                    return Error.NotEven;
+
+                self.*.a = num;
+            }
+
+            fn deinit(self: *Self) void {
+                self.*.a = 0;
+            }
+
+            fn log(self: Self) void {
+                std.log.info("Struct: {} - {s}", .{ self.a, self.info });
+            }
+        };
+        var str = Struct{};
+        try str.init(12);
+        defer str.deinit();
+        str.log();
+    }
+
+    {
+        var buffer: [64]u8 = undefined;
+        var alloc = std.heap.FixedBufferAllocator.init(&buffer);
+
+        var list = std.ArrayList(i32).init(alloc.allocator());
+        defer list.deinit();
+
+        try list.append(0);
+        try list.append(5);
+        try list.append(55);
+        try list.append(40);
+
+        for (list.items) |value| {
+            std.log.info("Fixed buffer value: {}", .{value});
+        }
+    }
+
+    {
+        std.log.info("GPA ->", .{});
+        var gpa = std.heap.GeneralPurposeAllocator(.{}){};
+        const alloc = gpa.allocator();
+        defer _ = gpa.deinit();
+
+        {
+            var list = std.ArrayList(i32).init(alloc);
+            defer list.deinit();
+
+            try list.append(0);
+            try list.append(5);
+            try list.append(55);
+            try list.append(40);
+
+            for (list.items) |value| {
+                std.log.info("Fixed buffer value: {}", .{value});
+            }
+        }
+
+        var aPtr = try alloc.create(i32);
+        aPtr.* = 10;
+        alloc.destroy(aPtr);
+    }
+
+    {
+        std.log.info("No Operator Overloads ->", .{});
+
+        const Vec3 = struct {
+            x: f32,
+            y: f32,
+            z: f32,
+
+            const Self = @This();
+
+            fn dot(self: Self, other: Self) f32 {
+                return self.x * other.x + self.y * other.y * self.z * other.z;
+            }
+        };
+
+        var vec = Vec3{ .x = 1, .y = 2, .z = 1 };
+        var vec2 = vec;
+        const dotProduct = vec.dot(vec2);
+        std.log.info("dot product: {}", .{dotProduct});
+    }
+
+    {
+        std.log.info("Vector ->", .{});
+
+        const a: f32 = 12;
+        const b: f64 = 10;
+        const sum = a + b;
+        std.log.info("sum: {d:.2} - {}", .{ sum, @TypeOf(sum) });
+
+        const vec1 = @Vector(3, f32){ 1, 2, 3 };
+        const vec2 = @Vector(3, f32){ 1, 4, 3 };
+
+        const result = vec1 + vec2;
+        std.log.info("vec: {d:.2}", .{result});
+    }
 }
