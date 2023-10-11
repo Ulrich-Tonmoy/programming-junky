@@ -1,1 +1,5 @@
 *.* linguist-vendored
+*.glsl linguist-vendored
+*.pl linguist-vendored
+Makefile linguist-vendored
+*.sh linguist-vendored
