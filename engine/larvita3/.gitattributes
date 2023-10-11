@@ -7,3 +7,6 @@
 Makefile linguist-vendored
 *.s linguist-vendored
 *.dcl linguist-vendored
+*.glsl linguist-vendored
+*html linguist-vendored
+*.sh linguist-vendored
