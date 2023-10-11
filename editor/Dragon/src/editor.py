@@ -15,8 +15,6 @@ from typing import TYPE_CHECKING
 if TYPE_CHECKING:
     from main import MainWindow
 
-import resources
-
 
 class Editor(QsciScintilla):
 
