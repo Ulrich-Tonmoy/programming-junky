@@ -4,3 +4,6 @@
 *.lua linguist-vendored
 *.pl linguist-vendored
 *.asm linguist-vendored
+Makefile inguist-vendored
+*.s inguist-vendored
+*.dcl inguist-vendored
