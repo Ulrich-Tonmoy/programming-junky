@@ -1,12 +1,1 @@
-*.h linguist-vendored
-*.c linguist-vendored
-*.cpp linguist-vendored
-*.lua linguist-vendored
-*.pl linguist-vendored
-*.asm linguist-vendored
-Makefile linguist-vendored
-*.s linguist-vendored
-*.dcl linguist-vendored
-*.glsl linguist-vendored
-*html linguist-vendored
-*.sh linguist-vendored
+*.* linguist-vendored
