@@ -1,0 +1,2 @@
+PyQt5Designer==5.14.1
+PyQt6==6.5.2
