@@ -32,7 +32,7 @@ class Paint(QMainWindow):
         self.worker.done.connect(self.process_done)
 
         self.WIDTH = 1280
-        self.HEIGHT = 800
+        self.HEIGHT = 720
 
         self.image = None
         self.healing_brush_active = False
@@ -70,7 +70,7 @@ class Paint(QMainWindow):
         self.image_view.mouseReleaseEvent = self.mouseReleaseEventIMG
         self.image_view.wheelEvent = self.wheelEventIMG
 
-        self.image_view.setDragMode(QGraphicsView.DragMode.ScrollHandDrag)
+        self.image_view.setDragMode(QGraphicsView.DragMode.RubberBandDrag)
         self.image_view.setTransformationAnchor(
             QGraphicsView.ViewportAnchor.AnchorUnderMouse)
         self.image_view.setResizeAnchor(
