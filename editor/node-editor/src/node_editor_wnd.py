@@ -4,7 +4,7 @@ from PyQt6.QtWidgets import QWidget
 from PyQt6.QtGui import *
 
 from node_graphics_scene import QDMGraphicsScene
-from node_editor_wnd import QDMGraphicsView
+from node_graphics_view import QDMGraphicsView
 
 
 class NodeEditorWnd(QWidget):
