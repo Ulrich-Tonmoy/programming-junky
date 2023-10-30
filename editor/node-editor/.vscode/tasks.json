@@ -8,7 +8,7 @@
       "args": ["${cwd}/src/main.py"],
       "group": "build",
       "presentation": {
-        "reveal": "always",
+        "reveal": "silent",
         "showReuseMessage": false,
         "clear": true
       }
