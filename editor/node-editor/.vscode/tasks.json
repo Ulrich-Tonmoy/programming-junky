@@ -1,0 +1,17 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "Python Run",
+      "type": "shell",
+      "command": "python",
+      "args": ["${cwd}/src/main.py"],
+      "group": "build",
+      "presentation": {
+        "reveal": "always",
+        "showReuseMessage": false,
+        "clear": true
+      }
+    }
+  ]
+}
