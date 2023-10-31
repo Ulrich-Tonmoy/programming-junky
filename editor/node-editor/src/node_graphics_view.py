@@ -11,6 +11,12 @@ class QDMGraphicsView(QGraphicsView):
         self.initUI()
         self.setScene(self.grScene)
 
+        self.zoomInFactor = 1.25
+        self.zoomClamp = True
+        self.zoom = 10
+        self.zoomStep = 1
+        self.zoomRange = [0, 10]
+
     def initUI(self):
         self.setRenderHints(QPainter.RenderHint.Antialiasing |
                             QPainter.RenderHint.TextAntialiasing | QPainter.RenderHint.SmoothPixmapTransform)
@@ -20,6 +26,8 @@ class QDMGraphicsView(QGraphicsView):
         self.setHorizontalScrollBarPolicy(
             Qt.ScrollBarPolicy.ScrollBarAlwaysOff)
         self.setVerticalScrollBarPolicy(Qt.ScrollBarPolicy.ScrollBarAlwaysOff)
+        self.setTransformationAnchor(
+            QGraphicsView.ViewportAnchor.AnchorUnderMouse)
 
     def mousePressEvent(self, event):
         if event.button() == Qt.MouseButton.MiddleButton:
@@ -67,3 +75,25 @@ class QDMGraphicsView(QGraphicsView):
 
     def rightMouseButtonRelease(self, event):
         return super().mouseReleaseEvent(event)
+
+    def wheelEvent(self, event: QWheelEvent):
+        # calc zoom factor
+        zoomOutFactor = 1 / self.zoomInFactor
+
+        # calculate zoom
+        if event.angleDelta().y() > 0:
+            zoomFactor = self.zoomInFactor
+            self.zoom += self.zoomStep
+        else:
+            zoomFactor = zoomOutFactor
+            self.zoom -= self.zoomStep
+
+        clamped = False
+        if self.zoom < self.zoomRange[0]:
+            self.zoom, clamped = self.zoomRange[0], True
+        if self.zoom > self.zoomRange[1]:
+            self.zoom, clamped = self.zoomRange[1], True
+
+        # set scene scale
+        if not clamped or self.zoomClamp is False:
+            self.scale(zoomFactor, zoomFactor)
