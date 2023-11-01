@@ -1,4 +1,5 @@
 from graphics_node import QDMGraphicsNode
+from content_widget import QDMNodeContentWidget
 
 
 class Node():
@@ -6,7 +7,8 @@ class Node():
         self.scene = scene
         self.title = title
 
-        self.grNode = QDMGraphicsNode(self, self.title)
+        self.content = QDMNodeContentWidget()
+        self.grNode = QDMGraphicsNode(self)
 
         self.scene.addNode(self)
         self.scene.grScene.addItem(self.grNode)
