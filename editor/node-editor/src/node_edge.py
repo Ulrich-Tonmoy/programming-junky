@@ -28,6 +28,9 @@ class Edge:
 
         self.scene.grScene.addItem(self.grEdge)
 
+    def __str__(self):
+        return "<Edge %s..%s>" % (hex(id(self))[2:5], hex(id(self))[-3:])
+
     def updatePositions(self):
         source_pos = self.start_socket.getSocketPosition()
         source_pos[0] += self.start_socket.node.grNode.pos().x()
