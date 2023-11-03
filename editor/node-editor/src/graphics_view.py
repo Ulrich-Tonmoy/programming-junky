@@ -85,15 +85,16 @@ class QDMGraphicsView(QGraphicsView):
         # we store the position of last LMB click
         self.last_lmb_click_scene_pos = self.mapToScene(event.pos())
 
+        if DEBUG:
+            print("LMB Click on", item, self.debug_modifiers(event))
+
         # logic
-        if hasattr(item, "node") or isinstance(item, QDMGraphicsEdge):
+        if hasattr(item, "node") or isinstance(item, QDMGraphicsEdge) or item is None:
             if event.modifiers() & Qt.KeyboardModifier.ShiftModifier:
-                if DEBUG:
-                    print("LMB + Shift on", item)
                 event.ignore()
-                fakeEvent = QMouseEvent(QEvent.MouseButtonPress, event.localPos(), event.screenPos(),
-                                        Qt.LeftButton, event.buttons() | Qt.LeftButton,
-                                        event.modifiers() | Qt.ControlModifier)
+                fakeEvent = QMouseEvent(QEvent.Type.MouseButtonPress, QPointF(event.pos()),
+                                        Qt.MouseButton.LeftButton, event.buttons() | Qt.MouseButton.LeftButton,
+                                        event.modifiers() | Qt.KeyboardModifier.ControlModifier)
                 super().mousePressEvent(fakeEvent)
                 return
 
@@ -115,14 +116,12 @@ class QDMGraphicsView(QGraphicsView):
         item = self.getItemAtClick(event)
 
         # logic
-        if hasattr(item, "node") or isinstance(item, QDMGraphicsEdge):
+        if hasattr(item, "node") or isinstance(item, QDMGraphicsEdge) or item is None:
             if event.modifiers() & Qt.KeyboardModifier.ShiftModifier:
-                if DEBUG:
-                    print("LMB Release + Shift on", item)
                 event.ignore()
-                fakeEvent = QMouseEvent(event.type(), event.localPos(), event.screenPos(),
-                                        Qt.LeftButton, Qt.NoButton,
-                                        event.modifiers() | Qt.ControlModifier)
+                fakeEvent = QMouseEvent(event.type(), QPointF(event.pos()),
+                                        Qt.MouseButton.LeftButton, Qt.MouseButton.NoButton,
+                                        event.modifiers() | Qt.KeyboardModifier.ControlModifier)
                 super().mouseReleaseEvent(fakeEvent)
                 return
 
@@ -164,6 +163,16 @@ class QDMGraphicsView(QGraphicsView):
             self.dragEdge.grEdge.update()
 
         super().mouseMoveEvent(event)
+
+    def debug_modifiers(self, event):
+        out = "MODS: "
+        if event.modifiers() & Qt.KeyboardModifier.ShiftModifier:
+            out += "SHIFT "
+        if event.modifiers() & Qt.KeyboardModifier.ControlModifier:
+            out += "CTRL "
+        if event.modifiers() & Qt.KeyboardModifier.AltModifier:
+            out += "ALT "
+        return out
 
     def getItemAtClick(self, event):
         """ return the object on which we've clicked/release mouse button """
