@@ -41,6 +41,9 @@ class Edge:
             end_pos[0] += self.end_socket.node.grNode.pos().x()
             end_pos[1] += self.end_socket.node.grNode.pos().y()
             self.grEdge.setDestination(*end_pos)
+        else:
+            self.grEdge.setDestination(*source_pos)
+
         if DEBUG:
             print(" SS:", self.start_socket)
             print(" ES:", self.end_socket)
