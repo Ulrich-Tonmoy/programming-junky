@@ -3,7 +3,7 @@ from graphics_edge import *
 
 EDGE_TYPE_DIRECT = 1
 EDGE_TYPE_BEZIER = 2
-DEBUG = True
+DEBUG = False
 
 
 class Edge:
@@ -40,7 +40,6 @@ class Edge:
             self.grEdge.setDestination(*end_pos)
         if DEBUG:
             print(" SS:", self.start_socket)
-        if DEBUG:
             print(" ES:", self.end_socket)
         self.grEdge.update()
 
