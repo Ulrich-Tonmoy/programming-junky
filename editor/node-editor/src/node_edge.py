@@ -27,6 +27,7 @@ class Edge:
                   "to", self.grEdge.posDestination)
 
         self.scene.grScene.addItem(self.grEdge)
+        self.scene.addEdge(self)
 
     def __str__(self):
         return "<Edge %s..%s>" % (hex(id(self))[2:5], hex(id(self))[-3:])
