@@ -7,15 +7,19 @@ DEBUG = True
 
 
 class Edge:
-    def __init__(self, scene, start_socket, end_socket, type=EDGE_TYPE_DIRECT):
+    def __init__(self, scene, start_socket, end_socket, edge_type=EDGE_TYPE_DIRECT):
 
         self.scene = scene
 
         self.start_socket = start_socket
         self.end_socket = end_socket
 
+        self.start_socket.edge = self
+        if self.end_socket is not None:
+            self.end_socket.edge = self
+
         self.grEdge = QDMGraphicsEdgeDirect(
-            self) if type == EDGE_TYPE_DIRECT else QDMGraphicsEdgeBezier(self)
+            self) if edge_type == EDGE_TYPE_DIRECT else QDMGraphicsEdgeBezier(self)
 
         self.updatePositions()
         if DEBUG:

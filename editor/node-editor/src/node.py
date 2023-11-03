@@ -51,3 +51,8 @@ class Node():
                 self.grNode.edge_size + index * self.socket_spacing
 
         return [x, y]
+
+    def updateConnectedEdges(self):
+        for socket in self.inputs + self.outputs:
+            if socket.hasEdge():
+                socket.edge.updatePositions()
