@@ -5,7 +5,7 @@ from PyQt6.QtGui import *
 
 from graphics_view import QDMGraphicsView
 from node import Node
-
+from node_socket import Socket
 from scene import Scene
 
 
@@ -27,7 +27,7 @@ class NodeEditorWnd(QWidget):
 
         # graphic scene
         self.scene = Scene()
-        node = Node(self.scene, "Node")
+        node = Node(self.scene, "Node", inputs=[1, 2, 3], outputs=[1])
 
         # graphic view
         self.view = QDMGraphicsView(self.scene.grScene, self)
