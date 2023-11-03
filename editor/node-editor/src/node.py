@@ -50,4 +50,4 @@ class Node():
             y = self.grNode.title_height + self.grNode._padding + \
                 self.grNode.edge_size + index * self.socket_spacing
 
-        return x, y
+        return [x, y]
