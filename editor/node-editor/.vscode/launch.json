@@ -1,0 +1,17 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "Run Node Editor",
+      "type": "python",
+      "request": "launch",
+      "program": "${cwd}/src/main.py",
+      "console": "internalConsole",
+      "presentation": {
+        "reveal": "silent",
+        "showReuseMessage": false,
+        "clear": true
+      }
+    }
+  ]
+}
