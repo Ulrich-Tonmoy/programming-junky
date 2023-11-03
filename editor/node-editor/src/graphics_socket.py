@@ -18,8 +18,8 @@ class QDMGraphicsSocket(QGraphicsItem):
     def paint(self, painter, QStyleOptionGraphicsItem, widget=None):
         painter.setBrush(self._brush)
         painter.setPen(self._pen)
-        painter.drawEllipse(-self.radius, -self.radius,
-                            2 * self.radius, 2 * self.radius)
+        painter.drawEllipse(int(-self.radius), int(-self.radius),
+                            int(2 * self.radius), int(2 * self.radius))
 
     def boundingRect(self):
         return QRectF(
