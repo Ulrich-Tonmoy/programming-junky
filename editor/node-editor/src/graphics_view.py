@@ -41,6 +41,8 @@ class QDMGraphicsView(QGraphicsView):
         self.setTransformationAnchor(
             QGraphicsView.ViewportAnchor.AnchorUnderMouse)
 
+        self.setDragMode(QGraphicsView.DragMode.RubberBandDrag)
+
     def mousePressEvent(self, event):
         if event.button() == Qt.MouseButton.MiddleButton:
             self.middleMouseButtonPress(event)
@@ -181,7 +183,6 @@ class QDMGraphicsView(QGraphicsView):
             if DEBUG:
                 print('View::edgeDragEnd ~  reassigned start & end sockets to drag edge')
             self.dragEdge.updatePositions()
-
             return True
 
         if DEBUG:
