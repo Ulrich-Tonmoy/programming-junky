@@ -6,7 +6,6 @@
       "type": "python",
       "request": "launch",
       "program": "${cwd}/src/main.py",
-      "console": "internalConsole",
       "presentation": {
         "reveal": "silent",
         "showReuseMessage": false,
