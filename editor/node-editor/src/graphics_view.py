@@ -201,7 +201,7 @@ class QDMGraphicsView(QGraphicsView):
                 super().keyPressEvent(event)
 
         elif event.key() == Qt.Key.Key_S and event.modifiers() & Qt.KeyboardModifier.ControlModifier:
-            self.grScene.scene.saveToFile("./src/data/graph2.json")
+            self.grScene.scene.saveToFile("./src/data/graph.json")
         elif event.key() == Qt.Key.Key_L and event.modifiers() & Qt.KeyboardModifier.ControlModifier:
             self.grScene.scene.loadFromFile("./src/data/graph.json")
 
