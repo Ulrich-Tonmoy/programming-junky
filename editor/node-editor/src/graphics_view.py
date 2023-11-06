@@ -117,12 +117,12 @@ class QDMGraphicsView(QGraphicsView):
                 return
 
         if item is None:
-            if event.modifiers() & Qt.ControlModifier:
+            if event.modifiers() & Qt.KeyboardModifier.ControlModifier:
                 self.mode = MODE_EDGE_CUT
                 fakeEvent = QMouseEvent(QEvent.Type.MouseButtonRelease, QPointF(event.pos()),
                                         Qt.MouseButton.LeftButton, Qt.MouseButton.NoButton, event.modifiers())
                 super().mouseReleaseEvent(fakeEvent)
-                QApplication.setOverrideCursor(Qt.CrossCursor)
+                QApplication.setOverrideCursor(Qt.CursorShape.CrossCursor)
                 return
 
         super().mousePressEvent(event)
@@ -151,7 +151,7 @@ class QDMGraphicsView(QGraphicsView):
             self.cutIntersectingEdges()
             self.cutline.line_points = []
             self.cutline.update()
-            QApplication.setOverrideCursor(Qt.ArrowCursor)
+            QApplication.setOverrideCursor(Qt.CursorShape.ArrowCursor)
             self.mode = MODE_NOOP
             return
 

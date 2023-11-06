@@ -9,7 +9,7 @@ class QDMCutLine(QGraphicsItem):
 
         self.line_points = []
 
-        self._pen = QPen(Qt.white)
+        self._pen = QPen(Qt.GlobalColor.white)
         self._pen.setWidthF(2.0)
         self._pen.setDashPattern([3, 3])
 
@@ -19,8 +19,8 @@ class QDMCutLine(QGraphicsItem):
         return QRectF(0, 0, 1, 1)
 
     def paint(self, painter, QStyleOptionGraphicsItem, widget=None):
-        painter.setRenderHint(QPainter.Antialiasing)
-        painter.setBrush(Qt.NoBrush)
+        painter.setRenderHint(QPainter.RenderHint.Antialiasing)
+        painter.setBrush(Qt.BrushStyle.NoBrush)
         painter.setPen(self._pen)
 
         poly = QPolygonF(self.line_points)
