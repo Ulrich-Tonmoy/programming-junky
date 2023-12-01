@@ -25,7 +25,7 @@ pub fn main() !void {
         {
             std.debug.print("For Loop: Array Index\n", .{});
 
-            var array = [_]i32{ 1, 2, 3, 4, 5, 6, 7, 8 };
+            const array = [_]i32{ 1, 2, 3, 4, 5, 6, 7, 8 };
             var array2 = [_]i32{ 10, 11, 12, 13, 14, 15, 16, 17, 18, 19 };
 
             for (array, array2[0..array.len], 0..) |val, val2, i| {
@@ -38,9 +38,9 @@ pub fn main() !void {
         std.log.info("? - Optionals\n", .{});
 
         // var b: ?i32 = 4;
-        var b: ?i32 = null;
+        const b: ?i32 = null;
         // var c: i32 = b orelse 0;
-        var c: i32 = if (b) |val| val else 0;
+        const c: i32 = if (b) |val| val else 0;
 
         std.log.info("c: {}\n", .{c});
 
@@ -57,7 +57,7 @@ pub fn main() !void {
         std.log.info("Pointers*\n", .{});
 
         var a: i32 = 32;
-        var aPtr = &a;
+        const aPtr = &a;
 
         std.log.info("a: {}\n", .{a});
         aPtr.* = 5;
@@ -67,15 +67,15 @@ pub fn main() !void {
             ptr: ?*i32 = null,
         };
 
-        var str = StructPtr{ .ptr = &a };
+        const str = StructPtr{ .ptr = &a };
         std.log.info("struct value: {}", .{str.ptr.?.*});
 
-        var ptr: [*c]i32 = &a;
+        const ptr: [*c]i32 = &a;
         std.log.info("{} == {}", .{ ptr[0], ptr.* });
 
         var arr = [_]i32{ 1, 2, 3, 4 };
-        var arrPtr: [*]i32 = &arr;
-        var arrPtrC: [*c]i32 = &arr;
+        const arrPtr: [*]i32 = &arr;
+        const arrPtrC: [*c]i32 = &arr;
         std.log.info("many ptr: {} - c like ptr: {}", .{ arrPtr[0], arrPtrC.* });
     }
 
@@ -110,7 +110,7 @@ pub fn main() !void {
     {
         std.log.info("Heap Allocator", .{});
         var alloc = std.heap.page_allocator;
-        var intPtr = try alloc.create(i32);
+        const intPtr = try alloc.create(i32);
         intPtr.* = 42;
         std.log.info("Heap allocated int is: {}", .{intPtr.*});
 
@@ -206,7 +206,7 @@ pub fn main() !void {
             }
         }
 
-        var aPtr = try alloc.create(i32);
+        const aPtr = try alloc.create(i32);
         aPtr.* = 10;
         alloc.destroy(aPtr);
     }
@@ -227,7 +227,7 @@ pub fn main() !void {
         };
 
         var vec = Vec3{ .x = 1, .y = 2, .z = 1 };
-        var vec2 = vec;
+        const vec2 = vec;
         const dotProduct = vec.dot(vec2);
         std.log.info("dot product: {}", .{dotProduct});
     }
