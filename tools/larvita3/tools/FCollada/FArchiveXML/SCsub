@@ -1,3 +1,0 @@
-Import('env_collada')
-
-env_collada.make_targets(env_collada.collada_objs)

@@ -1,7 +1,0 @@
-Import('env');
-Export('env');
-
-targets=['signals.cpp'];
-
-for x in targets:
-	env.gui_objects += [env.Object(x)]

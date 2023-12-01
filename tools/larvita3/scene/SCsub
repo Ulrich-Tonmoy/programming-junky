@@ -1,5 +1,0 @@
-Import('env')
-Export('env')
-
-SConscript('nodes/SCsub');
-SConscript('main/SCsub');
