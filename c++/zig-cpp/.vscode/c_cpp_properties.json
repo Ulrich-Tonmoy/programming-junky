@@ -1,0 +1,14 @@
+{
+  "configurations": [
+    {
+      "name": "Win32",
+      "includePath": ["${workspaceFolder}/**"],
+      "defines": ["_DEBUG", "UNICODE", "_UNICODE", "PEXPORT"],
+      "compilerPath": "c:\\Users\\Tonmoy\\AppData\\Roaming\\Code\\User\\globalStorage\\ziglang.vscode-zig\\zig_install\\zig.exe",
+      "cStandard": "c17",
+      "cppStandard": "c++17",
+      "intelliSenseMode": "clang-x64"
+    }
+  ],
+  "version": 4
+}
