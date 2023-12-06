@@ -2,7 +2,7 @@
 
 A template set up for vs code for cpp project with zig compiler.
 
-## To run on windows(:window:)
+## To run on windows
 
 - Copy this folder link `https://github.com/Ulrich-Tonmoy/programming-junky/tree/main/c%2B%2B/zig-cpp`.
 - Download the folder with [download-directory](https://download-directory.github.io/) or [DownGit](https://minhaskamal.github.io/DownGit) and unzip it.
