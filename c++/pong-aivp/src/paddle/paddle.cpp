@@ -24,10 +24,10 @@ void Paddle::Update() {
     // }
 
     if (IsKeyDown(KEY_UP)) {
-        y -= speed * GetFrameTime();
+        y -= speed;
     }
     if (IsKeyDown(KEY_DOWN)) {
-        y += speed * GetFrameTime();
+        y += speed;
     }
 
     Paddle::LimitMovement();

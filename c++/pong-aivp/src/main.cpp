@@ -22,8 +22,8 @@ int main() {
     Ball ball;
     ball.x = screen_width / 2;
     ball.y = screen_height / 2;
-    ball.speedX = 330;
-    ball.speedY = 330;
+    ball.speedX = 5;
+    ball.speedY = 5;
     ball.radius = 10;
     ball.color = Yellow;
 
@@ -32,7 +32,7 @@ int main() {
     leftPaddle.height = 120;
     leftPaddle.x = 10;
     leftPaddle.y = screen_height / 2 - leftPaddle.height / 2;
-    leftPaddle.speed = 500;
+    leftPaddle.speed = 6;
     leftPaddle.color = WHITE;
 
     Paddle rightPaddle;
@@ -40,7 +40,7 @@ int main() {
     rightPaddle.height = 120;
     rightPaddle.x = screen_width - rightPaddle.width - 10;
     rightPaddle.y = screen_height / 2 - rightPaddle.height / 2;
-    rightPaddle.speed = 500;
+    rightPaddle.speed = 6;
     rightPaddle.color = WHITE;
 
     while (WindowShouldClose() == false) {
@@ -66,10 +66,10 @@ int main() {
         DrawLine(screen_width / 2, 0, screen_width / 2, screen_height, WHITE);
 
         if (CheckCollisionCircleRec(Vector2{ball.x, ball.y}, ball.radius, rightPaddle.GetRect())) {
-            ball.speedX *= -1.1;
+            if (ball.speedX > 0) ball.speedX *= -1.05;
         }
         if (CheckCollisionCircleRec(Vector2{ball.x, ball.y}, ball.radius, leftPaddle.GetRect())) {
-            ball.speedX *= -1.1;
+            if (ball.speedX < 0) ball.speedX *= -1.05;
         }
 
         ClearBackground(DarkGreen);
@@ -84,6 +84,7 @@ int main() {
             leftPaddle.Draw();
             rightPaddle.Draw();
         }
+        // DrawText(TextFormat("%f", ball.speedX), 10, 50, 50, WHITE);
         DrawText(TextFormat("%i", GetFPS()), 10, 10, 50, WHITE);
         DrawText(TextFormat("%i", ai_score), screen_width / 4 - 20, 20, 80, WHITE);
         DrawText(TextFormat("%i", player_score), 3 * screen_width / 4 - 20, 20, 80, WHITE);

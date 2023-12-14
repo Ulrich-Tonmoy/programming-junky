@@ -5,8 +5,8 @@ void Ball::Draw() {
 }
 
 void Ball::Update(int* p_score, int* a_score) {
-    x += speedX * GetFrameTime();
-    y += speedY * GetFrameTime();
+    x += speedX;
+    y += speedY;
 
     if (y + radius >= GetScreenHeight() || y - radius <= 0) {
         speedY *= -1;
@@ -24,6 +24,9 @@ void Ball::Update(int* p_score, int* a_score) {
 void Ball::ResetBall() {
     x = GetScreenWidth() / 2;
     y = GetScreenHeight() / 2;
+
+    speedX = 5;
+    speedY = 5;
 
     int speed_choice[2] = {-1, 1};
     speedX *= speed_choice[GetRandomValue(0, 1)];

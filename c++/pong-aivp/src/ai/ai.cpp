@@ -2,10 +2,10 @@
 
 void AIPaddle::Update(int ballY) {
     if (y + height / 2 > ballY) {
-        y -= speed * GetFrameTime();
+        y -= speed;
     }
     if (y + height / 2 <= ballY) {
-        y += speed * GetFrameTime();
+        y += speed;
     }
 
     Paddle::LimitMovement();
