@@ -25,3 +25,5 @@ A template set up for vs code for raylib Pong Game project with zig compiler.
 ├── build.bat
 └── README.md
 ```
+
+- Finally press `ctrl + F5` or `ctrl + fn + F5`(on laptop keyboard) to run the project

@@ -12,5 +12,5 @@ A template set up for vs code for cpp project with zig compiler.
 - (optional) Then select `Zig Language Server: Install Server` to install zls.
 - Then again open Command Palette with `ctrl + shift + p` and search `>Open User Settings (JSON)` and it will open settings.json file.
 - From settings. json copy the `zig.path` value like this or just use this default installation path `c:\\Users\\Tonmoy\\AppData\\Roaming\\Code\\User\\globalStorage\\ziglang.vscode-zig\\zig_install,`
-- Then add that to the environment path follow [this video](https://youtu.be/ddif7SZ1Vp0?t=67) to set a variable to path.
+- Then add that to the environment path follow [this video](https://youtu.be/BJYNPs_rCJg) to set a variable to path.
 - Finally press `ctrl + F5` or `ctrl + fn + F5`(on laptop keyboard) to run the project
