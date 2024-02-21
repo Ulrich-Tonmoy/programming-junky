@@ -10,13 +10,17 @@ import sys
 import os
 from pathlib import Path
 import jedi
+import random
+
+logo = ["./src/icons/dragon.png", "./src/icons/phoenix.png", "./src/icons/phalcon.png", "./src/icons/elixir.png",
+        "./src/icons/leaf.png", "./src/icons/quill.png", "./src/icons/quills.png", "./src/icons/quill-lite.png"]
 
 
 class MainWindow(QMainWindow):
     def __init__(self):
         super(QMainWindow, self).__init__()
         self.app_name = "Dragon"
-        self.setWindowIcon(QIcon("./src/icons/dragon.png"))
+        self.setWindowIcon(QIcon(logo[random.randint(0, len(logo))]))
 
         self.current_file = None
         self.current_side_bar = None
