@@ -5,7 +5,7 @@ A simple gui app window in c.
 > [!Note]
 > For this we need to use MinGW or Visual Studio so im using the Visual Studio cl.exe
 > So check where is your cl.exe and update c_cpp_properties.json and build.bat
-> if installead at default then just update {14.39.33519} to {updated} in these file.
+> if installed at default then just update {14.39.33519} to {updated} in these file.
 
 ## To run on windows
 
