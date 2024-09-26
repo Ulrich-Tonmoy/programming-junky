@@ -2,8 +2,16 @@ const std = @import("std");
 
 pub fn build(b: *std.Build) void {
     const target = b.standardTargetOptions(.{});
-
     const optimize = b.standardOptimizeOption(.{});
+
+    // For Raylib -------------------------------- Start
+    const raylib_dep = b.dependency("raylib-zig", .{
+        .target = target,
+        .optimize = optimize,
+    });
+    const raylib = raylib_dep.module("raylib"); // main raylib module
+    const raylib_artifact = raylib_dep.artifact("raylib"); // raylib C library
+    // For Raylib -------------------------------- End
 
     const exe = b.addExecutable(.{
         .name = "raylib-intro",
@@ -12,10 +20,10 @@ pub fn build(b: *std.Build) void {
         .optimize = optimize,
     });
 
-    exe.addIncludePath(.{ .path = "lib/raylib/include" });
-    exe.addLibraryPath(.{ .path = "lib/raylib/lib" });
-    exe.linkSystemLibrary("raylibdll");
-    b.installFile("lib/raylib/lib/raylib.dll", "bin/raylib.dll");
+    // For Raylib -------------------------------- Start
+    exe.linkLibrary(raylib_artifact);
+    exe.root_module.addImport("raylib", raylib);
+    // For Raylib -------------------------------- End
 
     b.installArtifact(exe);
 

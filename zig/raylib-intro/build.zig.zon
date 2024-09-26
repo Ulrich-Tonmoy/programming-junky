@@ -1,8 +1,11 @@
 .{
     .name = "raylib-intro",
     .version = "0.0.0",
-    .dependencies = .{},
-    .paths = .{
-        "",
+    .dependencies = .{
+        .@"raylib-zig" = .{
+            .url = "https://github.com/Not-Nik/raylib-zig/archive/55e83468c9bb515a5f2725751e5f187a7b9b5afd.tar.gz",
+            .hash = "1220d32c92222ded6912529bbd502b2e0c5c5c2056c4b709ad0f6924d6524343a2d2",
+        },
     },
+    .paths = .{""},
 }
